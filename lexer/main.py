@@ -1,0 +1,10 @@
+from le import*
+copyfile("test1.asm", 'tmp.asm')
+#print(dealwithmacro("tmp.asm"))
+lexanal("tmp.asm", "lex.txt")
+#macro_analysis(outputfile)
+sentence_struct("tmp.asm", "struct.txt")
+first('tmp.asm','lex.txt','out.txt')
+#print(macro_dick)
+#print(outputfile)
+#macro_analysis(macro_list)
