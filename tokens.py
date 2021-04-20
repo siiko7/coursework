@@ -52,7 +52,7 @@ def removeSpaces(s: str) -> str:
 def fillTokensVector(s: str, line: int):
     rem = removeSpaces(s)
     if len(rem) != 0:
-        #itr =  
+        #itr =
         #print(itr)
         if rem in list(keyword.keys()):
         #if itr != keyword[[*keyword.keys()][-1]]:
@@ -60,12 +60,12 @@ def fillTokensVector(s: str, line: int):
             tmpToken = Token(rem,tokenType(keyword[rem].value))
             #print(tokenType(keyword[rem].value))
             #print(tmpToken.typel(keyword[rem]).value)
-            #print(tokenType(12).name)  
+            #print(tokenType(12).name)
             tokensVector.append([])
             tokensVector[line].append(tmpToken)
         else:
-            
-            
+
+
             kek = tokenType(matchConst(rem))
             if kek.name == 'Unknown':
                 kek = tokenType.Identifier
@@ -74,7 +74,7 @@ def fillTokensVector(s: str, line: int):
             push = Token(rem,kek)
             tokensVector.append([])
             tokensVector[line].append(push)
-            
+
 def tokenize(filename: str):
     isText = False
     size = 0
@@ -96,7 +96,7 @@ def tokenize(filename: str):
                 symbol = linel[i]
                 linel = linel.split(symbol,1)
                 linel=linel[0]+' '+symbol+' '+linel[1]
-                i+=3                    
+                i+=3
             else:
                 i+=1
         linel = linel.split()
@@ -119,7 +119,7 @@ def tokenize(filename: str):
             fillTokensVector(lex, lineindx)
             #print(lex)
             if line.index(lex) == inx-1:
-                lineindx+=1 
+                lineindx+=1
                 #print(lineindx)
 
 def removeEmpty():
@@ -130,12 +130,12 @@ listen = macro(0,0,0,0)
 def initLexems(line: int):
     listening = []
     #lex = Lexem()
-    global macros 
+    global macros
     global listen
     lexems[line] = Lexem()
     if len(tokensVector[line]) == 2 and tokensVector[line][0].typel == 'Identifier' and (tokensVector[line][1].typel == 'SegmentKeyword' or tokensVector[line][1].typel == 'EndsKeyword'):
         tokensVector[line][0].typel = tokenType.UserSegment.name
-        
+
         lexems[line].hasName = True
     elif len(tokensVector[line]) == 3 and tokensVector[line][1].typel == 'DbDirective':
         lexems[line].hasName = True
@@ -159,16 +159,16 @@ def initLexems(line: int):
             for i in range(2,len(tokensVector[line])):
                 m.params.append(tokensVector[line][i].token)
         #m.showMacro()
-        
+
         listen = m
-        
+
     elif len(tokensVector[line]) == 1 and tokensVector[line][0].typel == 'EndmKeyword':
         #global listen
-        listen.end = line 
+        listen.end = line
         macros.append(listen)
         #listening.append(listen)
         #listen.showMacro()
-        
+
         #listen.showMacro()
     elif tokensVector[line][0].typel == 'Identifier':
         macrotemp = hasMacro(tokensVector[line])
@@ -177,7 +177,7 @@ def initLexems(line: int):
     elif tokensVector[line][0].typel != 'EndKeyword' and tokensVector[line][0].typel != 'Instruction':
         lexems[line].initErro('Unknown lexem', tokensVector[line][0])
         return
-    
+
     structure(line)
     #for item in listening:
     #    item.showMacro()
@@ -194,7 +194,7 @@ def structure(line: int):
         offset+=1
     elif lexems[line].hasLabel:
         offset+=2
-    
+
     if len(tokensVector[line]) == offset:
         if offset == 1 and hasMacro(tokensVector[line])==False:
             lexems[line].initErro('Name without instruction', tokensVector[line][0])
@@ -206,13 +206,14 @@ def structure(line: int):
             return
         lexems[line].hasInstructions = True
         lexems[line].instrInd = offset
-   # else:
-    #    m = hasMacro(tokensVector[line])
-        #print(m)
-     #   if (m!=False or m.name != tokensVector[line][offset].token):
-      #      lexems[line].initErro("Exptected instruction or directive", tokensVector[line][0])
-       #     return
-    
+    else:
+        m = hasMacro(tokensVector[line])
+        print(m)
+        if (m!=False or m.name != tokensVector[line][offset].token):
+            print("LEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+            lexems[line].initErro("Exptected instruction or directive", tokensVector[line][0])
+            return
+
     offset+=1
     if len(tokensVector[line]) == offset:
         return
@@ -229,7 +230,7 @@ def structure(line: int):
     if coma != -1:
         lexems[line].opLen[1] = coma - offset
         lexems[line].numOfOperands = 2
-        lexems[line].opInd[1] = coma + 1
+        lexems[line].opInd[2] = coma + 1
         lexems[line].opLen[2] = len(tokensVector[line]) - coma - 1
     else:
         lexems[line].opLen[1] = len(tokensVector[line]) - offset
@@ -239,10 +240,10 @@ def proceedTokens():
     removeEmpty()
     global lexems
     lexems = [None] * len(tokensVector)
-    
+
     for i in range(0, len(tokensVector)):
         initLexems(i)
-    
+
     for i in range(0, len(tokensVector)):
         if lexems[i].hasError:
             continue
@@ -251,36 +252,23 @@ def proceedTokens():
 
         if m == False:
             continue
+        else:
+            print(m.__dict__)
 
         lexems[i].hasMacro = True
-        #m.showMacro()
-        parameters = {}
-        
-        for p in range(0,len(m.params)):
-            
-            parameters[m.params[p]] = tokensVector[i][p+1].token
-        print(parameters)
-        for j in range(m.start+1,m.end):
-            #print(j)
-            tokensVector.insert(tokensVector.index(tokensVector[0])+i+1,tokensVector[j])
-            lexems.insert(lexems.index(lexems[0])+i+1,lexems[j])
-            
-            i+=1
-#print(keyword[[*keyword.keys()][-1]])
-
-#fillTokensVector(',',0)
 
 
-    
+
+
 
 tokenize("test1.asm")
 proceedTokens()
 
-
+"""
 for item in tokensVector:
     for items in item:
         print(items.token, items.typel)
-
+"""
 
 #for line in lines:
  #   print(line)
@@ -293,11 +281,8 @@ for item in tokensVector:
 #for item in macros:
 #    item.showMacro()
 
-#for line in lexems:
- #   print(line.__dict__, '\n\n')
+for line in lexems:
+    print(line.__dict__, '\n\n')
 
-m=hasMacro(tokensVector[20])
-#n = hasMacro(tokensVector[18])
-#if (m != False):
-#    print(m.name,m.start,m.end)
-#    print(tokensVector[20][0].token)
+#for item in macros:
+#    print(item.__dict__)

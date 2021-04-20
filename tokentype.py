@@ -2,7 +2,7 @@ from enum import Enum
 from numpy import ndarray
 import numpy as np
 
-char=('+','*',':','[',']',',') 
+char=('+','*',':','[',']',',')
 
 class tokenType(Enum):
     DbDirective, DwDirective, DdDirective, Instruction, SegmentKeyword, MacroKeyword, PtrKeyword, DwKey, ByteKey, EndKeyword, EndmKeyword, EndsKeyword, Register32, Register8, Symbol, Identifier, HexNumber, DecNumber, BinNumber, Text, UserSegment,SegmentRegister, Label, MacroName, Unknown = range(25)

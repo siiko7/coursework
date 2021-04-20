@@ -1,8 +1,8 @@
-MAC1 MACRO 
+MAC1 MACRO
 	Std
 ENDM
 
-MAC2 MACRO A 
+MAC2 MACRO A
 	Pop a
 ENDM
 
@@ -19,33 +19,35 @@ DATA SEGMENT
 DATA ENDS
 
 CODE SEGMENT
-	Jnz EXIT
-	START:
+Jnz EXIT
+START:
 
-	MAC1
-	MAC2 ecx
-	
-	Inc ImmBA
-	Inc byte ptr gs:[esi*4]
-	Inc dword ptr gs:[esi*4]
-	Inc dword ptr [esi*4]
-	Inc byte ptr ss:[eax*2]
+MAC1
+MAC2 ecx
 
-	Add ah, al 
-	Add ebx, ecx
-	
-	Or dl, ImmBA
-	Or dl, [edx*2]
+Inc ImmBA
+Inc byte ptr gs:[esi*4]
+Inc dword ptr gs:[esi*4]
+Inc dword ptr [esi*4]
+Inc byte ptr ss:[eax*2]
 
-	And ds:[edx*2], ecx
-	And [esi*2], al
+Add ah, al
+Add ebx, ecx
 
-	Mov ecx, 0ddh
-	Mov al, 1h
-	Cmp dword ptr [ecx*4],  5555h
-	Cmp byte ptr [ebx*1],  0ddh
-	Jnz START
-	EXIT:
+Or dl, ImmBA
+Or dl, [edx*2]
+
+And ds:[edx*2], ecx
+And [esi*2], al
+
+Mov ecx, 0ddh
+Mov al, 1h
+
+Cmp dword ptr [ecx*4],  5555h
+Cmp byte ptr [ebx*1],  0ddh
+
+Jnz START
+EXIT:
 
 CODE ENDS
 END

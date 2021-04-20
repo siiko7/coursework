@@ -1,0 +1,66 @@
+mac1 macro
+std
+endm
+mac2 macro a
+pop a
+endm
+0000	data segment
+0000	author db "sukhoveyko_oleksiy_variant_20"
+001D	immba db 0bah
+001E	immbb db 02h
+001F	immbc db 2h
+0020	immda dd 2fh
+0024	immdb dd 1h
+0028	immdc dd 0fh
+002C	immsa db "qwerty"
+0032	data ends
+0000	code segment
+0000	jnz exit
+0006	start :
+mac1
+0006	std
+mac2 ecx
+0007	pop ecx
+0008	inc immba
+000E	inc byte ptr gs : [ esi * 4 ]
+0016	inc dword ptr gs : [ esi * 4 ]
+001E	inc dword ptr [ esi * 4 ]
+0025	inc byte ptr ss : [ eax * 2 ]
+002D	add ah , al
+002F	add ebx , ecx
+0031	or dl , immba
+0037	or dl , [ edx * 2 ]
+003E	and ds : [ edx * 2 ] , ecx
+0045	and [ esi * 2 ] , al
+004C	mov ecx , 0ddh
+0051	mov al , 1h
+0053	cmp dword ptr [ ecx * 4 ] , 5555h
+005E	cmp byte ptr [ ebx * 1 ] , 0ddh
+0061	jnz start
+0063	exit :
+0063	code ends
+
+
+Symbol Name        Type     Value
+
+author        Byte      data:0000
+immba        Byte      data:001D
+immbb        Byte      data:001E
+immbc        Byte      data:001F
+immda       Dword      data:0020
+immdb       Dword      data:0024
+immdc       Dword      data:0028
+immsa        Byte      data:002C
+start        Near      code:0006
+ exit        Near      code:0063
+
+
+Macro Name
+
+mac1
+mac2
+
+
+Groups & Segments		Bit		Size
+data				32				0032
+code				32				0063
