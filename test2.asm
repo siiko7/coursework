@@ -9,7 +9,7 @@ ENDM
 
 DATAA SEGMENT USE32 ;WORD PUBLIC 'DATA'
 	ASSUME  DS:DATAA
-	AUTHOR DB "SP Course Work var20 Sukhoveyko Olexiy FPM KB-94 2021-02-26"
+	AUTHOR DB "Sukhoveyko Oleksiy Variant 20"
 	ImmBA DB 0bah
 	ImmBB DB 02h
 	ImmBC DB 2h
@@ -29,8 +29,8 @@ CODE SEGMENT USE32 ;WORD PUBLIC 'CODE'
 
 	Inc ImmBA
 	Inc byte ptr gs:[esi*4]
-	Inc word ptr gs:[esi*4]
-	Inc word ptr [esi*4]
+	Inc dword ptr gs:[esi*4]
+	Inc dword ptr [esi*4]
 	Inc byte ptr ss:[eax*2]
 
 	Add ah, al
@@ -42,16 +42,14 @@ CODE SEGMENT USE32 ;WORD PUBLIC 'CODE'
 	And ds:[edx*2], ecx
 	And [esi*2], al
 
-	mov eax, 'kek' 
-	Mov ecx, ds:[ecx*4]
-	Mov al, ss:[ebx*1]
+	Mov ecx, 0ddh
+	Mov al, 1h
 
-	Cmp al, 0ddh
-	Cmp ecx, 5555h
+	Cmp dword ptr [ecx*4],  5555h
+	Cmp byte ptr [ebx*1],  0ddh
 
 	Jnz START
 	EXIT:
-	;MOV AX,4c00h
-	;INT 21h
+
 CODE ENDS
 END
